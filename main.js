@@ -9,21 +9,23 @@
 
 //First we will create a vertex class. (Vertex is interchangeable with nodes)
 class Vertex {
-  constructor(position, possibleMoves) {
-    //We pass the current position, which will be user defined, and possibleMoves which will be determined by a function outside of the constructor
+  constructor(position) {
     this.position = position;
+    const moves = determineMoves(position); // Returns an array
+
     this.possibleMoves = {
-      1: determineMoves(position).move1,
-      2: determineMoves(position).move2,
-      3: determineMoves(position).move3,
-      4: determineMoves(position).move4,
-      5: determineMoves(position).move5,
-      6: determineMoves(position).move6,
-      7: determineMoves(position).move7,
-      8: determineMoves(position).move8,
+      1: moves[0],
+      2: moves[1],
+      3: moves[2],
+      4: moves[3],
+      5: moves[4],
+      6: moves[5],
+      7: moves[6],
+      8: moves[7],
     };
   }
 }
+
 const determineMoves = (position) => {
   //Position needs to be (x, y) format which would also be an array [0, 1]
   //Knight can move 2 squares horizontally(x) and 1 vertically(y)
@@ -32,76 +34,80 @@ const determineMoves = (position) => {
     console.log(
       "The position array in determineMoves() is not in [x, y] format"
     );
+    return;
   }
+  const oldX = position[0];
+  const oldY = position[1];
   const move1 = (position) => {
-    const newX = position[0] + 2;
-    const newY = position[1] + 1;
+    console.log(position);
+    const newX = oldX + 2;
+    const newY = oldY + 1;
     if (newX < 0 || newX > 7 || newY < 0 || newY > 7) {
-      console.log("invalid move");
-      return;
+      console.log("move 1 invalid move");
+      return null;
     }
     return [newX, newY];
   };
   const move2 = (position) => {
-    const newX = position[0] + 2;
-    const newY = position[1] - 1;
+    const newX = oldX + 2;
+    const newY = oldY - 1;
     if (newX < 0 || newX > 7 || newY < 0 || newY > 7) {
-      console.log("invalid move");
-      return;
+      console.log("move 2 invalid move");
+      return null;
     }
     return [newX, newY];
   };
   const move3 = (position) => {
-    const newX = position[0] - 2;
-    const newY = position[1] + 1;
+    const newX = oldX - 2;
+    const newY = oldY + 1;
     if (newX < 0 || newX > 7 || newY < 0 || newY > 7) {
-      console.log("invalid move");
-      return;
+      console.log("move 3 invalid move");
+      return null;
     }
     return [newX, newY];
   };
   const move4 = (position) => {
-    const newX = position[0] - 2;
-    const newY = position[1] - 1;
+    const newX = oldX - 2;
+    const newY = oldY - 1;
     if (newX < 0 || newX > 7 || newY < 0 || newY > 7) {
-      console.log("invalid move");
-      return;
+      console.log("move 4 invalid move");
+      return null;
     }
     return [newX, newY];
   };
   const move5 = (position) => {
-    const newX = position[0] + 1;
-    const newY = position[1] + 2;
+    const newX = oldX + 1;
+    const newY = oldY + 2;
     if (newX < 0 || newX > 7 || newY < 0 || newY > 7) {
-      console.log("invalid move");
-      return;
+      console.log("move 5 invalid move");
+      return null;
     }
     return [newX, newY];
   };
   const move6 = (position) => {
-    const newX = position[0] + 1;
-    const newY = position[1] - 2;
+    const newX = oldX + 1;
+    const newY = oldY - 2;
     if (newX < 0 || newX > 7 || newY < 0 || newY > 7) {
-      console.log("invalid move");
-      return;
+      console.log("move 6 invalid move");
+      return null;
     }
     return [newX, newY];
   };
   const move7 = (position) => {
-    const newX = position[0] - 1;
-    const newY = position[1] + 2;
+    const newX = oldX - 1;
+    const newY = oldY + 2;
     if (newX < 0 || newX > 7 || newY < 0 || newY > 7) {
-      console.log("invalid move");
-      return;
+      console.log("move 7 invalid move");
+      return null;
     }
     return [newX, newY];
   };
   const move8 = (position) => {
-    const newX = position[0] - 1;
-    const newY = position[1] - 2;
+    const newX = oldX - 1;
+    const newY = oldY - 2;
     if (newX < 0 || newX > 7 || newY < 0 || newY > 7) {
-      console.log("invalid move");
-      return;
+      console.log("move 8 invalid move");
+      return null;
     }
     return [newX, newY];
   };
@@ -116,3 +122,6 @@ const determineMoves = (position) => {
     move8(),
   ];
 };
+
+const test = new Vertex([1, 0]);
+console.log(test);

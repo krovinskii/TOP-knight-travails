@@ -25,6 +25,21 @@ class Vertex {
     };
   }
 }
+class Graph {
+  constructor() {
+    this.vertices = new Map(); // stores all vertices by position
+  }
+
+  addVertex(position) {
+    const vertex = new Vertex(position);
+    this.vertices.set(position.toString(), vertex);
+    return vertex;
+  }
+
+  getVertex(position) {
+    return this.vertices.get(position.toString());
+  }
+}
 
 const determineMoves = (position) => {
   //Position needs to be (x, y) format which would also be an array [0, 1]
@@ -125,3 +140,28 @@ const determineMoves = (position) => {
 
 const test = new Vertex([1, 0]);
 console.log(test);
+
+//We now need an algorithm to search the quickest way to get to the users desired input. This should be done with recursion.
+
+const knightMoves = (start, end, movesTaken) => {
+  //Input validation
+  if (start.length !== 2 || end.length !== 2) {
+    console.log("invalid inputs in knightMoves. should be x,y format. ");
+    return;
+  }
+  movesTaken = movesTaken || [start];
+  //Base case
+  if (start[0] === end[0] && start[1] === end[1]) {
+    return movesTaken;
+  }
+  const startPosition = new Vertex(start);
+  /*
+  If the vertex.possible.moves.[1  - 8 ] !null
+
+  then (knightMoves(possibleMoves[1 - 8] called on the position from the vertex.possible.moves[1-8]))
+
+  keep track of movesTaken ( which is an array of x,y inputs so an array of arrays)
+  movesTaken.length will give us our shortest length
+  return the values of the shortest length
+  */
+};

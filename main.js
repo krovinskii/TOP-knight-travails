@@ -25,21 +25,6 @@ class Vertex {
     };
   }
 }
-class Graph {
-  constructor() {
-    this.vertices = new Map(); // stores all vertices by position
-  }
-
-  addVertex(position) {
-    const vertex = new Vertex(position);
-    this.vertices.set(position.toString(), vertex);
-    return vertex;
-  }
-
-  getVertex(position) {
-    return this.vertices.get(position.toString());
-  }
-}
 
 const determineMoves = (position) => {
   //Position needs to be (x, y) format which would also be an array [0, 1]
@@ -141,27 +126,64 @@ const determineMoves = (position) => {
 const test = new Vertex([1, 0]);
 console.log(test);
 
-//We now need an algorithm to search the quickest way to get to the users desired input. This should be done with recursion.
+// We now need an algorithm to search the quickest way to get to the users desired input. This should be done with recursion.
 
-const knightMoves = (start, end, movesTaken) => {
-  //Input validation
+const knightMoves = (start, end) => {
+  // Input validation
   if (start.length !== 2 || end.length !== 2) {
-    console.log("invalid inputs in knightMoves. should be x,y format. ");
+    console.log("Invalid inputs in knightMoves. Should be x,y format.");
     return;
   }
-  movesTaken = movesTaken || [start];
-  //Base case
-  if (start[0] === end[0] && start[1] === end[1]) {
-    return movesTaken;
+
+  const queue = [[start]];
+  const visited = new Set([start.toString()]);
+
+  while (queue.length > 0) {
+    const currentPath = queue.shift();
+    const currentPosition = currentPath[currentPath.length - 1];
+
+    if (currentPosition[0] === end[0] && currentPosition[1] === end[1]) {
+      return {
+        path: currentPath,
+        moves: currentPath.length - 1,
+      };
+    }
+
+    // Get all possible moves from current position
+    const currentVertex = new Vertex(currentPosition);
+    const possibleMoves = Object.values(currentVertex.possibleMoves).filter(
+      (move) => move !== null
+    );
+
+    // Try each possible move
+    for (const move of possibleMoves) {
+      const moveStr = move.toString();
+
+      if (!visited.has(moveStr)) {
+        visited.add(moveStr);
+        const newPath = [...currentPath, move];
+        queue.push(newPath);
+      }
+    }
   }
-  const startPosition = new Vertex(start);
-  /*
-  If the vertex.possible.moves.[1  - 8 ] !null
 
-  then (knightMoves(possibleMoves[1 - 8] called on the position from the vertex.possible.moves[1-8]))
-
-  keep track of movesTaken ( which is an array of x,y inputs so an array of arrays)
-  movesTaken.length will give us our shortest length
-  return the values of the shortest length
-  */
+  return null;
 };
+const formatKnightPath = (result) => {
+  if (!result) return "No path found!";
+
+  const { path, moves } = result;
+  let output = `You made it in ${moves} moves! Here's your path:\n`;
+
+  path.forEach((position, index) => {
+    output += `[${position[0]}, ${position[1]}]`;
+    if (index < path.length - 1) output += " -> ";
+  });
+
+  return output;
+};
+
+const start = [0, 0];
+const end = [7, 7];
+const result = knightMoves(start, end);
+console.log(formatKnightPath(result));
